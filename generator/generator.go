@@ -49,4 +49,9 @@ func Generate( template shared.Template, text0 string, text1 string ){
         return
     }
     fmt.Printf("%+v\n", response_data)
+    meme_data, ok := response_data["data"]
+    if ok {
+        fmt.Printf("%+v", meme_data)
+        meme_url, err := meme_data.(Data)
+    }
 }
