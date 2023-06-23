@@ -31,10 +31,10 @@ func main(){
     chosen_template, err := strconv.Atoi(input_reader.Text())
     if err != nil {
         println("You have to enter the number in front of the desired meme template.")
-        println("For example, enter 0 for the 'One does not simply' template")
+        println("For example, enter 1 for the 'One does not simply' template")
         return
     }
-    if chosen_template > len(available_templates)-1 {
+    if chosen_template > len(available_templates) || chosen_template <= 0 {
         println("Invalid template number.")
         return
     }
