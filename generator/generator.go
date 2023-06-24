@@ -1,6 +1,7 @@
 package generator
 
 import (
+	"bufio"
 	"encoding/json"
 	"fmt"
 	"go-meme/shared"
@@ -8,6 +9,7 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
+    "os"
 )
 
 func Generate( template shared.Template, text0 string, text1 string ){
@@ -71,6 +73,7 @@ func Generate( template shared.Template, text0 string, text1 string ){
                     println(err)
                     return
                 }
+                println("Your meme has been served. Enjoy")
             }
         }else {
             println("Error while extracting data")
