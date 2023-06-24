@@ -49,8 +49,28 @@ func Generate( template shared.Template, text0 string, text1 string ){
         fmt.Printf("%+v", meme_data)
         if data, ok := meme_data["data"].(map[string]interface{}); ok {
             if url, ok := data["url"].(string); ok {
-                println(url)
-
+                response, err := http.Get(url)
+                if err != nil {
+                    println(err)
+                    return
+                }
+                defer response.Body.Close()
+                
+                if response.StatusCode != http.StatusOK {
+                    println("Error while downloading image")
+                    return
+                }
+                image, err := ioutil.ReadAll(response.Body)
+                if err != nil {
+                    println("Error while reading image bytes")
+                    return
+                }
+                err = ioutil.WriteFile( "./random_meme_generated_by_gomeme.jpg" , image, 0644)
+                if err != nil {
+                    println("Error while saving image")
+                    println(err)
+                    return
+                }
             }
         }else {
             println("Error while extracting data")
