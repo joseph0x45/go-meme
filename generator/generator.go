@@ -27,31 +27,37 @@ func Generate( template shared.Template, text0 string, text1 string ){
     )
     request.Header.Set("Content-Type", "application/x-www-form-urlencoded")
     if err != nil {
-        println("Something went wrong when generating your meme.")
-        println("Please retry or report this bug on https://github.com/TheWisePigeon/go-meme")
+        println(err)
         return
     }
 
     response, err := http.DefaultClient.Do(request)
     if err != nil {
-        println("Something went wrong when generating your meme.")
-        println("Please retry or report this bug on https://github.com/TheWisePigeon/go-meme")
+        println(err)
         return
     }
 
     defer response.Body.Close()
 
     response_body, err := ioutil.ReadAll(response.Body)
-    var response_data map[string]interface{}
+    var response_data interface{}
     if err:= json.Unmarshal(response_body, &response_data); err!=nil {
-        println("Something went wrong when generating your meme.")
-        println("Please retry or report this bug on https://github.com/TheWisePigeon/go-meme")
+        println(err)
         return
     }
-    fmt.Printf("%+v\n", response_data)
-    meme_data, ok := response_data["data"]
-    if ok {
+    if meme_data, ok := response_data.(map[string]interface{}); ok {
         fmt.Printf("%+v", meme_data)
-        meme_url, err := meme_data.(Data)
+        if data, ok := meme_data["data"].(map[string]interface{}); ok {
+            if url, ok := data["url"].(string); ok {
+                println(url)
+
+            }
+        }else {
+            println("Error while extracting data")
+            return
+        }
+    }else {
+        println("Error while performing type assertion")
+        return
     }
 }
