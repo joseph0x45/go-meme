@@ -1,7 +1,6 @@
 package generator
 
 import (
-	"bufio"
 	"encoding/json"
 	"fmt"
 	"go-meme/shared"
@@ -9,7 +8,6 @@ import (
 	"net/http"
 	"net/url"
 	"strings"
-    "os"
 )
 
 func Generate( template shared.Template, text0 string, text1 string ){
